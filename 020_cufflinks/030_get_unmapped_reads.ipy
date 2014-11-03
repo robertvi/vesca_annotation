@@ -1,0 +1,18 @@
+#!/usr/bin/ipython
+
+'''
+get just the unmapped reads from tophat's output
+'''
+
+from rjv.ftemplate import *
+
+for sample in next_sample('samples'):
+	base = '/home/vicker/vesca_annotation/tophat_mildew'
+	
+	bam         = T('@{base}_@{sample}/unmapped.bam')
+	sortedbam   = T('@{base}_@{sample}/unmapped_sorted')
+	filteredbam = T('@{base}_@{sample}/unmapped_filtered.bam')
+	read1       = T('@{base}_@{sample}/unmapped_R1.fq')
+	read2       = T('@{base}_@{sample}/unmapped_R2.fq')
+	
+	myqsub('get_unmapped.sh')

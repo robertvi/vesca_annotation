@@ -1,0 +1,15 @@
+#!/usr/bin/ipython
+
+'''
+run fastqc
+'''
+
+from rjv.ftemplate import *
+
+for i in [6]:
+	sample = 'L%03d'%i
+	
+	fastq = '../dunwell_data/%s_R1_fixed.fq'%sample
+	threads = 8
+	myqsub2('fastqc_test.sh','tmp/test_%s.sh'%sample,ops=['-pe smp @{threads}'])
+	

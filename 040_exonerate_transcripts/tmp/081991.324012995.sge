@@ -1,0 +1,21 @@
+#$ -S /bin/sh
+#$ -N blastn
+#$ -o ../logs/$JOB_NAME.$JOB_ID.out
+#$ -e ../logs/$JOB_NAME.$JOB_ID.err
+#$ -cwd
+#$ -l h_vmem=2G
+#$ -l h_rt=60:00:00
+###$ -pe smp ${threads}
+
+# map other species transcripts to the vesca assembly
+# use LOW stringency to minimise false negatives
+
+set -e
+set -u
+
+blastn='/home/vicker/programs/ncbi-blast-2.2.29+/bin/blastn'
+ops='-evalue 1e-4 -outfmt 6'
+
+mkdir -p /home/vicker/vesca_annotation/blastn_transcripts/
+
+${blastn} -db /home/vicker/vesca_annotation/refseq/fvesca_v1.1_scaffolds.fa -query /home/vicker/vesca_annotation/rosaceae_transcripts/Malus_x_domestica.v1.0.consensus_mRNA.fa -out /home/vicker/vesca_annotation/blastn_transcripts/Malus_x_domestica.v1.0.consensus_mRNA.fa.tsv ${ops}

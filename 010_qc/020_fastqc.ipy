@@ -1,0 +1,14 @@
+#!/usr/bin/ipython
+
+'''
+run fastqc
+'''
+
+from rjv.ftemplate import *
+
+for sample in next_sample('samples_qc'):
+	fastq = '../dunwell_data/%s_R1_fixed.fq'%sample
+	myqsub('fastqc.sh')
+	
+	fastq = '../dunwell_data/%s_R2_fixed.fq'%sample
+	myqsub('fastqc.sh')

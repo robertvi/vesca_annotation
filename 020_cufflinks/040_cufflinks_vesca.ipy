@@ -1,0 +1,20 @@
+#!/usr/bin/ipython
+
+'''
+map mildew-filtered RNA seq to vesca
+with tophat - cufflinks pipeline
+once for each sample and once for combined data
+'''
+
+from rjv.ftemplate import *
+
+#run cufflinks for each sample
+for sample in next_sample('samples'):
+	read1 = T('/home/vicker/vesca_annotation/tophat_mildew_@{sample}/unmapped_R1.fq')
+	read2 = T('/home/vicker/vesca_annotation/tophat_mildew_@{sample}/unmapped_R2.fq')
+	outdir = T('/home/vicker/vesca_annotation/cufflinks_vesca_@{sample}')
+	mem = '2G'
+	#rt = '35:00:00' #individual samples
+	rt = '120:00:00' #combined samples
+	
+	myqsub('cufflinks_vesca.sh')

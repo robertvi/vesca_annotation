@@ -1,0 +1,13 @@
+#$ -S /bin/sh
+#$ -N exonerate
+#$ -o ../logs/$JOB_NAME.$JOB_ID.out
+#$ -e ../logs/$JOB_NAME.$JOB_ID.err
+#$ -cwd
+#$ -l h_vmem=2G
+#$ -l h_rt=48:00:00
+
+exon='/home/vicker/programs/exonerate-2.2.0-x86_64/bin/exonerate'
+
+ops='--score 500 --showvulgar no --showalignment no --showtargetgff yes --showcigar yes --ryo "ryo:\t%S\t%pi\t%ps\t%ql\t%tl\t%g\t%V\nAveragePercentIdentity: %pi\n"'
+
+${exon} --model est2genome ${ops} /home/vicker/vesca_annotation/rosaceae_transcripts/Prunus_persica_v1.0_transcript.fa /home/vicker/vesca_annotation/refseq/fvesca_v1.1_scaffolds.fa > /home/vicker/vesca_annotation/exonerate_transcripts/Prunus_persica_v1.0_transcript.fa.exonerate

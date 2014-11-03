@@ -1,0 +1,13 @@
+#!/usr/bin/ipython
+
+'''
+validate fastq files
+'''
+
+from rjv.ftemplate import *
+
+for sample in next_sample('samples_qc'):
+	read1 = '../dunwell_data/%s_R1_fixed.fq'%sample
+	read2 = '../dunwell_data/%s_R2_fixed.fq'%sample
+	
+	myqsub('validate_fastqs.sh')

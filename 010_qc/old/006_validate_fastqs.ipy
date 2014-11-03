@@ -1,0 +1,19 @@
+#!/usr/bin/ipython
+
+'''
+validate fastq files
+'''
+
+from rjv.ftemplate import *
+
+filez=\
+[
+	['L006_R1_fixed.fq','L006_R2_fixed.fq'],
+	['L007_R1.fq','L007_R2.fq'],
+	['L008_R1.fq','L008_R2.fq'],
+]
+
+for i,x in enumerate(filez):
+	read1 = '../dunwell_data/%s'%x[0]
+	read2 = '../dunwell_data/%s'%x[1]
+	myqsub('validate_fastqs2.sh','tmp/validate_%s.sh'%(x[0]+x[1]))

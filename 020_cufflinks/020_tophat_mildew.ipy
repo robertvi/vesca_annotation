@@ -1,0 +1,14 @@
+#!/usr/bin/ipython
+
+'''
+map to downy mildew using tophat
+to remove mildew RNA contamination
+'''
+
+from rjv.ftemplate import *
+
+for sample in next_sample('samples'):
+	reads1 = '../dunwell_data/%s_R1_trimmed.fq'%sample
+	reads2 = '../dunwell_data/%s_R2_trimmed.fq'%sample
+	
+	myqsub('tophat_mildew.sh')

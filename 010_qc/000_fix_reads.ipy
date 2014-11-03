@@ -1,0 +1,29 @@
+#!/usr/bin/ipython
+
+'''
+rescue usable read pairs from the Jim Dunwell dataset HC (control)
+output R1 to a separate file for read pairs where R2 is missing
+
+the first corrupted R2 read is
+@HWI-ST759:176:C1D9KACXX:6:2312:7768:57503 2:N:0:GTGAAA
+
+R2 data is apparently overwritten by null bytes (0's) for about 5% of the file
+
+H1DAI and H8DAI have been checked and don't have the same problem
+so the original files can be used
+'''
+
+from rjv.ftemplate import *
+
+for sample in next_sample('samples_qc'):
+	inp1 = T('../dunwell_data/@{sample}_R1.fq')
+	inp2 = T('../dunwell_data/@{sample}_R2.fq')
+	out1 = T('../dunwell_data/@{sample}_R1_fixed.fq')
+	out2 = T('../dunwell_data/@{sample}_R2_fixed.fq')
+	out3 = T('../dunwell_data/@{sample}_R1_unpaired.fq')
+	
+	#myqsub('fix_data.py') #fix damaged file
+	
+	#make symlink to original file
+	!ln -s $inp1 $out1
+	!ln -s $inp2 $out2

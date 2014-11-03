@@ -1,0 +1,13 @@
+#!/usr/bin/ipython
+
+'''
+convert cufflinks gtf output to gff3
+'''
+
+from rjv.ftemplate import *
+
+for sample in next_sample('samples'):
+	inpfile = T('/home/vicker/vesca_annotation/cufflinks_vesca_@{sample}/transcripts.gtf')
+	outfile = T('/home/vicker/vesca_annotation/cufflinks_vesca_@{sample}/transcripts.gff3')
+	
+	myqsub('gtf_to_gff3.py')

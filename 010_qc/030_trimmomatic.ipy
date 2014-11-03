@@ -1,0 +1,32 @@
+#!/usr/bin/ipython
+
+'''
+trimmomatic to remove adaptor contaminants
+
+*p is paired output
+*u is unpaired output
+'''
+
+from rjv.ftemplate import *
+
+for sample in next_sample('samples_qc'):
+	inp1 = '../dunwell_data/%s_R1_fixed.fq'%sample
+	inp2 = '../dunwell_data/%s_R2_fixed.fq'%sample
+	out1p = '../dunwell_data/%s_R1_trimmed.fq'%sample
+	out1u = '../dunwell_data/%s_R1_ignore.fq'%sample
+	out2p = '../dunwell_data/%s_R2_trimmed.fq'%sample
+	out2u = '../dunwell_data/%s_R2_ignore.fq'%sample
+	
+	threads = 8
+	rt = '2:00:00'
+	mem = '1.4G'
+	
+	fadapt = '/home/vicker/programs/Trimmomatic-0.32/adapters/TruSeq3-PE-2.fa'
+	mismatch = 2
+	pclip = 30
+	sclip = 10
+	minlen = 21
+	javamem = '-Xmx1g'
+	trimlog = '/dev/null'
+
+	myqsub('trimmomatic-PE1.sh')

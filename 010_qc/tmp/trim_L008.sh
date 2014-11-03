@@ -1,0 +1,21 @@
+#$ -S /bin/sh
+#$ -N trim-PE
+#$ -o ../logs/$JOB_NAME.$JOB_ID.out
+#$ -e ../logs/$JOB_NAME.$JOB_ID.err
+#$ -cwd
+#$ -l h_vmem=1.4G
+#$ -l h_rt=2:00:00
+#$ -pe smp 8
+#$ -V
+
+java -Xmx1g -jar /home/vicker/programs/Trimmomatic-0.32/trimmomatic-0.32.jar\
+    PE -threads 8 -phred33\
+    -trimlog ../logs/trimmomatic-PE.log\
+    ../dunwell_data/L008_R1_fixed.fq ../dunwell_data/L008_R2_fixed.fq\
+    ../dunwell_data/L008_R1_trimmed.fq ../dunwell_data/L008_R1_ignore.fq ../dunwell_data/L008_R2_trimmed.fq ../dunwell_data/L008_R2_ignore.fq\
+    ILLUMINACLIP:/home/vicker/programs/Trimmomatic-0.32/adapters/TruSeq3-PE-2.fa:2:30:10\
+    MINLEN:21
+
+#    LEADING:3\
+#    TRAILING:3\
+#    SLIDINGWINDOW:4:20\

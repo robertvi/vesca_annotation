@@ -1,0 +1,22 @@
+#!/usr/bin/ipython
+
+'''
+combine several mildew filtered samples
+'''
+
+from rjv.ftemplate import *
+
+#for Hcombined and Ycombined
+for sample in next_sample('samples_combined'):
+	outdir = T('/home/vicker/vesca_annotation/tophat_mildew_@{sample}')
+	read1 = outdir+'/unmapped_R1.fq'
+	read2 = outdir+'/unmapped_R2.fq'
+	
+	#get list of single samples to be merged
+	sample_list = [x for x in next_sample(T('samples_@{sample}'))]
+	
+	base = '/home/vicker/vesca_annotation/tophat_mildew_%s/unmapped'
+	list1 = ' '.join([base%x+'_R1.fq' for x in sample_list])
+	list2 = ' '.join([base%x+'_R2.fq' for x in sample_list])
+
+	myqsub('combine_samples.sh')

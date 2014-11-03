@@ -1,0 +1,41 @@
+#$ -S /usr/bin/python
+#$ -N gtf2gff3
+#$ -o ../logs/$JOB_NAME.$JOB_ID.out
+#$ -e ../logs/$JOB_NAME.$JOB_ID.err
+#$ -cwd
+#$ -V
+#$ -l h_vmem=1G
+#$ -l h_rt=3:00:00
+
+#
+# convert gtf to gff3
+#
+
+import sys
+
+f = open('/home/vicker/vesca_annotation/cufflinks_vesca_L008/transcripts.gtf')
+fout = open('/home/vicker/vesca_annotation/cufflinks_vesca_L008/transcripts.gff3','wb')
+
+for line in f:
+    #scaf0000129     Cufflinks       transcript      17430   21135   1000    +       .       gene_id "CUFF.1";
+    tok = line.split('\t')
+    uid = int(tok[8][14:].split('"')[0])
+    
+    tok[1] = 'strigosa_RNAseq'
+    
+    if tok[2] == 'transcript':
+        tok[2] = 'gene'
+        tok[8] = 'ID=cuff.%d;Name=cuff.%d'%(uid,uid)
+        fout.write('\t'.join(tok) + '\n')
+        
+        tok[2] = 'mRNA'
+        tok[8] = 'ID=cuff.%d.mRNA;Name=cuff.%d.mRNA;Parent=cuff.%d'%(uid,uid,uid)
+        fout.write('\t'.join(tok) + '\n')
+    
+    elif tok[2] == 'exon':
+        tok[2] = 'CDS'
+        tok[8] = 'ID=cuff.%d.CDS;Name=cuff.%d.CDS;Parent=cuff.%d.mRNA'%(uid,uid,uid)
+        fout.write('\t'.join(tok) + '\n')
+
+fout.close()
+f.close()

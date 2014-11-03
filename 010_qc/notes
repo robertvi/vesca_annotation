@@ -1,0 +1,28 @@
+2014-10-01
+==========
+yesterday's problems with fastqc reporting running out of heap space:
+only one of the two read files caused this problem
+not sure if it is due to weird data in that file or genuine lack of memory
+due to large sequence file
+
+I also produced a hacked version of the fastqc perl driver script which allocated
+750M per thread instead of 250m
+
+splitting the data into ten sub files, I was not clear whether this still caused an error or not
+therefore will rerun the split to confirm and try to determine the source of the error
+
+fastqc was failing for one of the subfiles because the is a block of about 800M of zeros
+written over about 5% of the reads in the R2 file, which was being loaded as a single read
+by fastqc (and my splitfastq2.py script)
+the id of the last read header before the missing data is:
+@HWI-ST759:176:C1D9KACXX:6:2312:7768:57503 2:N:0:GTGAAA
+on line: 374094709
+vicker@bio72:~/vesca_annotation/dunwell_data$ cat ./L006_R1.fq | grep '^@HWI' | wc --lines
+98757338
+vicker@bio72:~/vesca_annotation/dunwell_data$ cat ./L006_R2.fq | grep '^@HWI' | wc --lines
+93523678
+-rwxr--r-- 1 vicker vicker 15849289401 Oct  1 11:40 L006_R1.fq
+-rwxr--r-- 1 vicker vicker 15849289401 Oct  1 11:40 L006_R2.fq
+both files are exactly the same size, but R1 has more read headers than R2
+xxd shows the corrupted data to be null bytes
+therefore I need to write a script to extract the unaffected read pairs

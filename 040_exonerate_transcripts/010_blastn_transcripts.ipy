@@ -1,0 +1,17 @@
+#!/usr/bin/ipython
+
+'''
+quick, low stringency alignment of transcripts to refseq using blastn
+'''
+
+from rjv.ftemplate import *
+
+for sample in next_sample('transcripts'):
+	base = '/home/vicker/vesca_annotation/'
+	#threads = 8
+	query = base + 'rosaceae_transcripts/' + sample
+	db = base + 'refseq/fvesca_v1.1_scaffolds.fa'
+	outdir = base + 'blastn_transcripts/'
+	outfile = outdir + sample + '.tsv'
+	
+	myqsub('blastn_transcripts.sh')
