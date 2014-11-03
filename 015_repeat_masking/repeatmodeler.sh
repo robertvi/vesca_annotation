@@ -4,7 +4,9 @@
 #$ -e ../logs/$JOB_NAME.$JOB_ID.err
 #$ -cwd
 #$ -l h_vmem=7.9G
-#$ -l h_rt=60:00:00
+#$ -l h_rt=360:00:00
+
+#60 hrs was too little
 
 set -e
 set -u

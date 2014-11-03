@@ -1,0 +1,10 @@
+#!/usr/bin/ipython
+
+'''
+run repeatmodeler
+using myqsub will automatically capture the qsub output including job number
+'''
+
+from rjv.ftemplate import *
+
+myqsub('repeatmodeler.sh')

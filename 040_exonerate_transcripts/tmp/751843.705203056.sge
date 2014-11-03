@@ -11,6 +11,6 @@ import os
 exon='/home/vicker/programs/exonerate-2.2.0-x86_64/bin/exonerate'
 ops='--score 500 --showvulgar no --showalignment no --showtargetgff yes --showcigar yes --ryo "ryo:\t%S\t%pi\t%ps\t%ql\t%tl\t%g\t%V\nAveragePercentIdentity: %pi\n"'
 
-os.system('mkdir -p @{outdir}')
+os.system('mkdir -p /home/vicker/vesca_annotation/exonerate_transcripts/')
 
-os.system(exon+' --model est2genome '+ops+' @{query} @{subject} > @{outfile}')
+os.system(exon+' --model est2genome '+ops+' /home/vicker/vesca_annotation/rosaceae_transcripts/Prunus_persica_v1.0_transcript.fa /home/vicker/vesca_annotation/refseq/fvesca_v1.1_scaffolds.fa > /home/vicker/vesca_annotation/exonerate_transcripts/Prunus_persica_v1.0_transcript.fa.exonerate')

@@ -14,4 +14,4 @@ set -u
 
 sleep 10
 echo 'done test job'
-#valid_2fastq.py @{read1} @{read2}
+#valid_2fastq.py ../dunwell_data/YC_R1_fixed.fq ../dunwell_data/YC_R2_fixed.fq
