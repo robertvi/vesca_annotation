@@ -3,8 +3,8 @@
 #$ -o ../logs/$JOB_NAME.$JOB_ID.out
 #$ -e ../logs/$JOB_NAME.$JOB_ID.err
 #$ -cwd
-#$ -l h_vmem=2G
-#$ -l h_rt=10:00:00
+#$ -l h_vmem=0.5G
+#$ -l h_rt=2:00:00
 #$ -V
 
 '''
@@ -34,8 +34,9 @@ for hit in next_hit(hitfile):
     subj[hit['subject']][hit['query']] = True
     
 ct = 0
-os.system('rm @{outdir}@{sample}.*.query')
-os.system('rm @{outdir}@{sample}.*.subject')
+os.system('rm @{outdir}@{sample}*query')
+os.system('rm @{outdir}@{sample}*subject')
+os.system('rm @{outdir}@{sample}*subjectid')
 outquery = '@{outdir}@{sample}.%06d.query'
 outsubject = '@{outdir}@{sample}.%06d.subject'
 outsubjectid = '@{outdir}@{sample}.%06d.subjectid'
@@ -43,10 +44,8 @@ outsubjectid = '@{outdir}@{sample}.%06d.subjectid'
 for j,sid in enumerate(subj.iterkeys()):
     #write subject sequence to file
     subfile = outsubject%j
-    f = open(subfile,'wb')
     fa = get_fasta(subject,sid)
-    write_fasta(fa,f)
-    f.close()
+    write_fasta(fa,subfile)
     
     for i,qid in enumerate(subj[sid].iterkeys()):
         offset = i % maxhits
@@ -55,14 +54,12 @@ for j,sid in enumerate(subj.iterkeys()):
         subidfile = outsubjectid%(ct+offset)
         if not os.path.isfile(subidfile):
             f = open(subidfile,'wb')
-            f.write('%d\n'%j)
+            f.write('%06d\n'%j)
             f.close()
         
         #append query
         queryfile = outquery%(ct+offset)
-        f = open(queryfile,'a')
         fa = get_fasta(query,qid)
-        write_fasta(fa,f)
-        f.close()
+        append_fasta(fa,queryfile)
         
     ct += offset + 1

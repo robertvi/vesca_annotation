@@ -2,16 +2,38 @@
 
 '''
 splice aware alignment of transcripts to refseq
+search only between query and subject which have blastn hits
+see 016_group_queries
 '''
 
+import time
 from rjv.ftemplate import *
+from rjv.fileio import *
 
-for sample in next_sample('transcripts'):
-	base = '/home/vicker/vesca_annotation/'
-	query = base + 'rosaceae_transcripts/' + sample
-	subject = base + 'refseq/fvesca_v1.1_scaffolds.fa'
-	outdir = base + 'exonerate_transcripts/'
-	outfile = outdir + sample + '.exonerate'
-    jobname = 'exonerate_' + sample
-	
-	myqsub('exonerate_transcripts.py')
+base = '/home/vicker/vesca_annotation/'
+jobdir = base + 'exonerate_jobs/'
+!ls $jobdir | grep '.query' > transcripts_grouped 
+outdir = base + 'exonerate_hits/'
+
+!mkdir -p $outdir
+!rm $outdir*.exonerate
+
+#eg Prunus_persica_v1.0_transcript.fa.005632.query
+for query in next_sample('transcripts_grouped'):
+    jobname = 'exonerate_' + query.replace('.query','')
+    query = jobdir + query
+    
+    #eg Prunus_persica_v1.0_transcript.fa.005632.subjectid
+    subidfile = query.replace('.query','.subjectid')
+    subjectid = cat(subidfile).strip()
+
+    #eg Prunus_persica_v1.0_transcript.fa.xxxxxx.subject
+    subject = '.'.join(query.split('.')[:-2])+'.'+subjectid+'.subject'
+    
+    #eg Prunus_persica_v1.0_transcript.fa.xxxxxx.exonerate
+    outfile = query.replace(jobdir,outdir).replace('.query','.exonerate')
+
+    myqsub('exonerate_transcripts.py')
+
+    #try not to overload scheduler
+    time.sleep(0.1)

@@ -4,7 +4,7 @@
 #$ -e ../logs/$JOB_NAME.$JOB_ID.err
 #$ -cwd
 #$ -l h_vmem=0.5G
-#$ -l h_rt=10:00:00
+#$ -l h_rt=100:00:00
 
 import os
 
