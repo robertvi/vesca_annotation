@@ -1,0 +1,19 @@
+#!/usr/bin/ipython
+
+'''
+group query sequences according to which scaffold(s) they hit
+'''
+
+from rjv.ftemplate import *
+
+for sample in next_sample('transcripts'):
+    base = '/home/vicker/vesca_annotation/'
+    query = base + 'rosaceae_transcripts/' + sample
+    subject = base + 'refseq/fvesca_v1.1_scaffolds.fa'
+    hitdir = base + 'blastn_transcripts/'
+    hitfile = hitdir + sample + '.tsv'
+    jobname = 'groupqueries_' + sample
+    outdir = base + 'exonerate_jobs/'
+    !mkdir -p $outdir
+
+    myqsub('group_queries.py')

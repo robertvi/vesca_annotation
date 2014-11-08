@@ -1,0 +1,24 @@
+#!/usr/bin/ipython
+
+'''
+splice aware alignment of transcripts to refseq
+
+ls /home/vicker/vesca_annotation/rosaceae_transcripts/split/*.fa | cut -d '/' -f 7 > transcripts_split
+'''
+
+from rjv.ftemplate import *
+import time
+
+!ls /home/vicker/vesca_annotation/rosaceae_transcripts/split/*.fa | cut -d '/' -f 7 > transcripts_split
+
+for sample in next_sample('transcripts_split'):
+    base = '/home/vicker/vesca_annotation/'
+    query = base + 'rosaceae_transcripts/split/' + sample
+    subject = base + 'refseq/fvesca_v1.1_scaffolds.fa'
+    outdir = base + 'exonerate_transcripts/'
+    outfile = outdir + sample + '.exonerate'
+    jobname = 'exonerate_' + sample
+
+    myqsub('exonerate_transcripts.py')
+
+    time.sleep(0.2)

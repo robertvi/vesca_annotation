@@ -7,10 +7,10 @@ split transcripts into smaller batches
 from rjv.ftemplate import *
 
 for sample in next_sample('transcripts'):
-	base = '/home/vicker/vesca_annotation/'
-	query = base + 'rosaceae_transcripts/' + sample
-	subject = base + 'refseq/fvesca_v1.1_scaffolds.fa'
-	outdir = base + 'exonerate_transcripts/'
-	outfile = outdir + sample + '.exonerate'
-	
-	myqsub('exonerate_transcripts.py')
+    base = '/home/vicker/vesca_annotation/'
+    query = base + 'rosaceae_transcripts/' + sample
+    outdir = base + 'rosaceae_transcripts/split'
+    split = 1000
+    jobname = 'split_'+sample
+
+    myqsub('split_transcripts.sh')

@@ -1,7 +1,7 @@
 #!/usr/bin/ipython
 
 '''
-quick, low stringency alignment of transcripts to refseq using blastn
+splice aware alignment of transcripts to refseq
 '''
 
 from rjv.ftemplate import *
@@ -12,5 +12,6 @@ for sample in next_sample('transcripts'):
 	subject = base + 'refseq/fvesca_v1.1_scaffolds.fa'
 	outdir = base + 'exonerate_transcripts/'
 	outfile = outdir + sample + '.exonerate'
+    jobname = 'exonerate_' + sample
 	
 	myqsub('exonerate_transcripts.py')
